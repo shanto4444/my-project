@@ -7,7 +7,7 @@ const ContexApi = ({ children }) => {
 
   useEffect(() => {
     axios
-      .get("https://dummyjson.com/products")
+      .get("https://dummyjson.com/products?limit=0")
       .then((res) => setApiInfo(res.data.products));
   }, []);
 

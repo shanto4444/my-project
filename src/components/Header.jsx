@@ -17,13 +17,13 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between">
           <div className="flex flex-wrap items-center gap-5">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 font-[josefinSans] text-[16px]">
               <p>
                 <CiMail />
               </p>
               <p>mdshantohosen803@gmail.com</p>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 font-[josefinSans] text-[16px]">
               <p>
                 <IoIosCall />
               </p>
@@ -32,7 +32,7 @@ const Header = () => {
           </div>
           <div className="flex items-center">
             <ul
-              className={`lg:flex lg:items-center lg:gap-16 lg:static ${
+              className={`lg:flex lg:items-center lg:gap-16 lg:static font-[josefinSans] text-[16px] ${
                 head
                   ? "pl-[50%] absolute text-center top-[63px] left-0 right-0 duration-500 text-black w-full bg-zinc-500 space-y-5 py-4"
                   : "absolute -top-52 left-0 right-0 w-full"

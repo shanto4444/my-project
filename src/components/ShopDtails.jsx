@@ -5,7 +5,6 @@ import ProductTitleBox from "./ProductTitleBox";
 const ShopDtails = () => {
   return (
     <div>
-      <ProductTitleBox />
       <ProductsItem />
     </div>
   );

@@ -1,11 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
 import { TbPointFilled } from "react-icons/tb";
-import img from "../assets/image 9.png";
+
 import img1 from "../assets/image 1174.png";
-import { GrChapterPrevious, GrChapterNext } from "react-icons/gr";
+
 import { GoTriangleDown } from "react-icons/go";
 import { apiData } from "./ContexApi";
-
+import { TfiLayoutGrid2Alt, TfiList } from "react-icons/tfi";
+import { CgShoppingCart } from "react-icons/cg";
+import { FaHeart, FaSearchPlus } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { addToCart } from "./slices/CartSlice";
+import { ToastContainer, toast } from "react-toastify";
+import { Link } from "react-router-dom";
 const ProductsItem = () => {
   let data = useContext(apiData);
   let [category, setCategory] = useState([]);
@@ -63,11 +69,28 @@ const ProductsItem = () => {
     setCurrentPage(pagesNumber);
   };
 
+  const handlePageNumber = (e) => {
+    setPerPage(parseInt(e.target.value || 30));
+  };
+  const disPatch = useDispatch();
+  const handleAddToCart = (item) => {
+    disPatch(addToCart({ ...item, qty: 1 }));
+    toast.success("add to cart!", {
+      position: "top-center",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
   return (
     <section className="py-16">
       <div className="container mx-auto">
         <div>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center pt-5 pb-16">
             <div className="flex flex-col justify-center">
               <h1 className="text-[32px] font-bold font-serif">
                 Ecommerce Accesory and Fasion Item
@@ -76,7 +99,11 @@ const ProductsItem = () => {
             </div>
             <div className="flex gap-3">
               <p className="text-[16px] font-sans">per page:</p>
-              <input className="border outline-none pl-4" type="text" />
+              <input
+                onChange={handlePageNumber}
+                className="border outline-none pl-4"
+                type="text"
+              />
             </div>
             <div className="flex gap-3">
               <p className="text-[16px] font-sans">sort by:</p>
@@ -156,10 +183,10 @@ const ProductsItem = () => {
                 )}
               </div>
             </div>
-            <div className="w-[75%] grid grid-cols-1 lg:grid-cols-3 gap-3 ">
+            <div className="w-[75%] grid grid-cols-1 lg:grid-cols-3 gap-3 lg:justify-between">
               {categoryItems.length > 0
                 ? categoryItems.map((item) => (
-                    <div className="shadow-lg flex flex-col justify-center gap-5 items-center pb-5 bg-slate-100 ">
+                    <div className="relative group transition ease-in-out duration-500 hover:bg-slate-300 shadow-lg flex flex-col justify-between gap-5 items-center pb-5 bg-slate-100 ">
                       <img
                         className=" px-9"
                         src={item.thumbnail}
@@ -176,12 +203,20 @@ const ProductsItem = () => {
                       <div className="flex gap-10">
                         <p className="font-normal">{item.price}</p>
                         <p className="line-through font-normal">{item.price}</p>
+                      </div>
+                      <div className="hidden w-[60px] group-hover:duration-700 group-hover:ease-in-out group-hover:block absolute group-hover:top-4 group-hover:left-2 -top-40 -left-40 space-y-8 pt-10 pl-5">
+                        <p className="text-3xl font-[joseFins] rounded-t-3xl">
+                          sale
+                        </p>
+                        <CgShoppingCart className="text-2xl  font-[lato]" />
+                        <FaHeart className="text-2xl  font-[lato]" />
+                        <FaSearchPlus className="text-2xl  font-[lato]" />
                       </div>
                     </div>
                   ))
                 : priceItem.length > 0
                 ? priceItem.map((item) => (
-                    <div className="shadow-lg flex flex-col justify-center gap-5 items-center pb-5 bg-slate-100 ">
+                    <div className="relative group transition ease-in-out duration-500 hover:bg-slate-300 shadow-lg flex flex-col justify-between gap-5 items-center pb-5 bg-slate-100 ">
                       <img
                         className=" px-9"
                         src={item.thumbnail}
@@ -199,15 +234,57 @@ const ProductsItem = () => {
                         <p className="font-normal">{item.price}</p>
                         <p className="line-through font-normal">{item.price}</p>
                       </div>
+                      <div className="hidden w-[60px] group-hover:duration-700 group-hover:ease-in-out group-hover:block absolute group-hover:top-4 group-hover:left-2 -top-40 -left-40 space-y-8 pt-10 pl-5">
+                        <p className="text-3xl font-[joseFins] rounded-t-3xl">
+                          sale
+                        </p>
+                        <CgShoppingCart className="text-2xl  font-[lato]" />
+                        <FaHeart className="text-2xl  font-[lato]" />
+                        <FaSearchPlus className="text-2xl  font-[lato]" />
+                      </div>
                     </div>
                   ))
                 : currentPageProduct.map((item) => (
-                    <div className="shadow-lg flex flex-col justify-center gap-5 items-center pb-5 bg-slate-100 ">
-                      <img
-                        className=" px-9"
-                        src={item.thumbnail}
-                        alt="have a photo"
-                      />
+                    <div
+                      key={item.id}
+                      className=" shadow-lg flex flex-col justify-between gap-5 items-center pb-5 bg-slate-100 "
+                    >
+                      <div className="flex flex-col items-center justify-center relative group transition ease-in-out duration-500 hover:bg-slate-300">
+                        <Link to={`/shop/${item.id}`}>
+                          <img
+                            className=" px-9 "
+                            src={item.thumbnail}
+                            alt="have a photo"
+                          />
+                        </Link>
+                        <div className="cursor-pointer flex flex-col items-center gap-7 absolute bottom-5 left-5 opacity-0 translate-y-10  group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-in-out ">
+                          <div
+                            onClick={() => handleAddToCart(item)}
+                            className="w-10 h-10 hover:bg-[#FFFFFF] rounded-full flex items-center justify-center"
+                          >
+                            <CgShoppingCart className="text-[#151875] text-lg" />
+                          </div>
+
+                          <div className="w-10 h-10 hover:bg-[#FFFFFF] rounded-full flex items-center justify-center">
+                            <FaHeart className="text-[#151875] text-lg" />
+                          </div>
+                          <div className="w-10 h-10 hover:bg-[#FFFFFF] rounded-full flex items-center justify-center">
+                            <FaSearchPlus className="text-[#151875] text-lg" />
+                          </div>
+                        </div>
+                        <ToastContainer
+                          position="top-center"
+                          autoClose={5000}
+                          hideProgressBar={false}
+                          newestOnTop={false}
+                          closeOnClick={false}
+                          rtl={false}
+                          pauseOnFocusLoss
+                          draggable
+                          pauseOnHover
+                          theme="light"
+                        />
+                      </div>
                       <h3 className="text-[18px] font-serif font-bold">
                         {item.title}...
                       </h3>
@@ -235,7 +312,7 @@ const ProductsItem = () => {
             {pages.map((pagesNumber) => (
               <button
                 onClick={() => handlePage(pagesNumber)}
-                className={`"px-4 py-2 border-2 text-base text-black font-semibold" ${
+                className={`px-4 py-2 border-2 text-base text-black font-semibold ${
                   pagesNumber === currentPage ? "bg-gray-900 text-white" : ""
                 }`}
               >

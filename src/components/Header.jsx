@@ -4,9 +4,12 @@ import { IoIosCall } from "react-icons/io";
 import { FaAngleDown } from "react-icons/fa";
 import { FaBarsStaggered } from "react-icons/fa6";
 import { GiCrossedSabres } from "react-icons/gi";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   let [head, setHead] = useState(false);
+  let products = useSelector((state) => state.CartItemManeger.cartItems);
 
   const handleManu2 = () => {
     setHead(!head);
@@ -51,8 +54,13 @@ const Header = () => {
               <li className="flex items-center gap-1">
                 Wishlist <CiHeart />
               </li>
-              <li className="flex items-center text-[30px] gap-1">
-                <CiShoppingCart />
+              <li className="relative flex items-center text-[30px] gap-1">
+                <div className="w-6 h-6 bg-red-400 rounded-full -top-2 -right-2 absolute flex justify-center items-center">
+                  <span className="text-xl">{products.length}</span>
+                </div>
+                <Link to="/cart">
+                  <CiShoppingCart />
+                </Link>
               </li>
             </ul>
             <div
